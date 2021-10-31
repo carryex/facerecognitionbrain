@@ -32,7 +32,12 @@ class Register extends React.Component {
         name: this.state.name
       })
     })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status >= 400 && response.status < 600) {
+          throw Error('Bad request')
+        }
+        return response.json();
+      })
       .then(user => {
         if (user) {
           this.props.loadUser(user)
